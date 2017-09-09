@@ -63,6 +63,33 @@ namespace Ideas.Services
             return ideas;
         }
 
+        public async Task PostIdeasAsync(Idea idea, string accessToken)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            var json = JsonConvert.SerializeObject(idea);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            var response = await client.PostAsync("http://localhost:5628/api/ideas", content);       
+        }
+
+        public async Task PutIdeasAsync(Idea idea, string accessToken)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            var json = JsonConvert.SerializeObject(idea);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            var response = await client.PutAsync("http://localhost:5628/api/ideas/" + idea.Id, content);
+        }
+
+
+        public async Task DeleteIdeasAsync(int Id, string accessToken)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await client.DeleteAsync("http://localhost:5628/api/ideas/" + Id);
+        }
 
     }
 }
